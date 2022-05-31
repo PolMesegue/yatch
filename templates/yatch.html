@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+  <!--  All snippets are MIT license http://bootdey.com/license -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <title>Yet Another tor Chat</title>
+
+</head>
+
+<body>
+
+  <div id="maindiv" class="container bootstrap snippets bootdeys">
+    <div class="col-md-7 col-xs-12 col-md-offset-2">
+      <!-- Panel Chat -->
+
+      <div class="panel" id="chat">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="icon wb-chat-text" aria-hidden="true"></i> Welcome to Yatch
+          </h3>
+          There are currently <b id="count_users"></b> user(s) connected.</br>
+          If there are more connections than you expected, please close this server and double-check with whom you
+          shared the url and key.
+          <p hidden id="uuid"></p>
+
+        </div>
+
+        <div class="panel-body">
+          <div id="chatbox" class="chats chat-box">
+
+          </div>
+        </div>
+        <div class="panel-footer">
+          <form action="" method="POST">
+            <div class="parent">
+              <div class="div1">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Username...">
+              </div>
+              <div class="div2">
+                <label for="message" class="form-label">Your message</label>
+                <textarea class="form-control" id="message" rows="2"></textarea>
+              </div>
+              <div class="div3">
+                <button type="submit" class="btn btn-primary mb-3">Send</button>
+              </div>
+              <div class="btn-group div4">
+
+                <button type="button" id="clear_mine" class="btn btn-info mb-2">Clean my messages</button>
+                <button type="button" id="clear" class="btn btn-warning mb-2">Clean all messages</button>
+                <button type="button" id="close" class="btn btn-danger mb-2">Shut down server</button>
+              </div>
+            </div>
+        </div>
+
+
+
+        </form>
+      </div>
+    </div>
+    <!-- End Panel Chat -->
+  </div>
+
+  <style type="text/css">
+    body {
+      background: #ddd;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .parent {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+    }
+
+    .div1 {
+      grid-area: 1 / 1 / 2 / 5;
+    }
+
+    .div2 {
+      grid-area: 2 / 1 / 4 / 5;
+    }
+
+    .div3 {
+      grid-area: 3 / 5 / 4 / 6;
+    }
+
+    .div4 {
+      grid-area: 4 / 1 / 5 / 5;
+    }
+
+    .chat-box {
+      height: 300px;
+      width: 100%;
+      overflow: auto;
+      flex: 1;
+
+    }
+
+    .chats {
+      padding: 30px 15px
+    }
+
+    .chat-avatar {
+      float: right
+    }
+
+    .chat-body {
+      display: block;
+      margin: 10px 30px 0 0;
+      overflow: hidden
+    }
+
+    .chat-body:first-child {
+      margin-top: 0
+    }
+
+    .chat-content {
+      position: relative;
+      display: block;
+      float: right;
+      padding: 8px 15px;
+      margin: 0 20px 10px 0;
+      clear: both;
+      color: #fff;
+      background-color: #62a8ea;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .chat-content:before {
+      position: absolute;
+      top: 10px;
+      right: -10px;
+      width: 0;
+      height: 0;
+      content: '';
+      border: 5px solid transparent;
+      border-left-color: #62a8ea
+    }
+
+    .chat-content>p:last-child {
+      margin-bottom: 0
+    }
+
+    .chat-content+.chat-content:before {
+      border-color: transparent
+    }
+
+    .chat-time {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, .6)
+    }
+
+    .chat-left .chat-avatar {
+      float: left
+    }
+
+
+    .chat-left .chat-body {
+      margin-right: 0;
+      margin-left: 30px
+    }
+
+    .chat-left .chat-content {
+      float: left;
+      margin: 0 0 10px 20px;
+      color: #76838f;
+      background-color: #dfe9ef
+    }
+
+    .chat-left .chat-content:before {
+      right: auto;
+      left: -10px;
+      border-right-color: #dfe9ef;
+      border-left-color: transparent
+    }
+
+    .chat-left .chat-content+.chat-content:before {
+      border-color: transparent
+    }
+
+    .chat-left .chat-time {
+      color: #a3afb7
+    }
+
+    .panel-footer {
+      padding: 0 30px 15px;
+      background-color: transparent;
+      border-top: 1px solid transparent;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+  <script type="text/javascript">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    $('#uuid').html(uuidv4())
+
+    $("#message").keypress(function (e) {
+      if (e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+
+        $(this).closest("form").submit();
+      }
+    });
+    var clean = $("#clear").click(function () {
+      socket.emit('server_clean')
+    });
+
+    var clean = $("#close").click(function () {
+      socket.emit('server_close')
+    });
+
+    var clean = $("#clear_mine").click(function () {
+      let user_uuid = $("#uuid").html()
+      socket.emit('server_clean_mine', user_uuid)
+    });
+
+    var form = $('form').on('submit', function (e) {
+      e.preventDefault()
+      let user_name = $('#username').val()
+      let user_input = $('#message').val()
+      let user_uuid = $("#uuid").html()
+
+      socket.emit('my event', {
+        user_name: user_name,
+        message: user_input,
+        uuid: user_uuid
+      })
+      $('#message').val('').focus()
+    })
+
+
+    socket.on('client_clean', function () {
+      $('div.chat').html("")
+    })
+
+    socket.on('client_clean_mine', function (uuid) {
+
+      $("div[id*=" + uuid + "]").remove();
+
+    })
+
+    socket.on('client_close', function () {
+      $("#maindiv").remove(); 
+      //$('div.chat').html("")
+      document.location.replace("http://2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion/");
+    })
+
+    socket.on('user_connected', function (count_users) {
+      $("#count_users").html(count_users)
+    })
+    socket.on('user_disconnected', function (count_users) {
+      $("#count_users").html(count_users)
+    })
+    socket.on('my response', function (msg) {
+      let tmp_uuid = $("#uuid").html();
+      if (typeof msg.user_name !== 'undefined') {
+
+        if (msg.uuid == tmp_uuid) {
+          $('div.chats').append('<div id ="' + msg.uuid + '" class="chat" datetime="' + msg.timestamp + '"><div class="chat-avatar"><p>' + msg.user_name + '</p></div><div class="chat-body"><div class="chat-content"><p>' + msg.message + '</p><time class="chat-time" datetime="' + msg.timestamp + '">' + msg.time + '</time></div></div></div>')
+        } else {
+          $('div.chats').append('<div id ="' + msg.uuid + '" class="chat chat-left" datetime="' + msg.timestamp + '"><div class="chat-avatar"><p>' + msg.user_name + '</p></div><div class="chat-body"><div class="chat-content"><p>' + msg.message + '</p><time class="chat-time" datetime="' + msg.timestamp + '">' + msg.time + '</time></div></div></div>')
+
+        }
+        updateScroll()
+      }
+    })
+
+    socket.on('time_clean', function (json) {
+      var $chats_object = $(".chat");
+      $chats_object.each(function () {
+        let msg_time = $(this).attr("datetime");
+        let current_time = json.timestamp;
+        let diff_time = current_time - msg_time;
+        if (diff_time > json.max_time) {
+          $(this).html("")
+
+        }
+        
+      });
+    })
+
+    function updateScroll(){
+    var element = document.getElementById("chatbox");
+    element.scrollTop = element.scrollHeight;
+}
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
