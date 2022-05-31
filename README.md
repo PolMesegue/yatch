@@ -1,1 +1,1 @@
-# yatch
+# Yatch - Yet another tor chat
